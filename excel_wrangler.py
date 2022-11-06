@@ -28,7 +28,7 @@ for file in files:
 print(codes)
 
 
-for i in range(len(codes)): 
+for i in range(3): 
     # loaing packages.
     xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = codes[i],
                        engine='openpyxl', na_values=['nan'])
@@ -114,6 +114,10 @@ for i in range(len(codes)):
     
     # Reordering columns 
     xl = xl.loc[:, xl.columns[-2:].to_list() + xl.columns[:-2].to_list()]
+    print('Reorder Columns', '\n')
+    
+    # Saving file
+    xl.to_csv(f'csv_file/{code[i]}.csv', index = False)
     
     
 
