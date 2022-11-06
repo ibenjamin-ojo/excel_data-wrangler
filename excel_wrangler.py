@@ -44,18 +44,19 @@ for i in range(len(codes)):
             code_idx = j
             header_idx = j + 1
             break
-    print(f'Container {code[i]}: {code}')
+    print(f'Container {code[i]}: {code}', '\n')
     
     # Column Header. 
     columns = xl.iloc[header_idx,:].to_list()
-    
-    print(f"Container {code[i]} columns: {columns}")
+    print(f"Container {code[i]} columns: {columns}", '\n')
     
     # # converting first row to header. 
     xl.columns = columns
+    print('Replacing None Columns', '\n')
     
     # Deleting rows
     xl.drop([i for i in range(header_idx+1)], axis=0, inplace=True)
+    print('Dropping rows with headers', '\n')
     
     # Reset_index
     xl.reset_index(drop = True)
@@ -63,6 +64,7 @@ for i in range(len(codes)):
     # Creating columns.
     xl['CONTAINER_CODE'] = code
     xl['SUPPLIER_NAME'] = ' '
+    print('Creating Container_code and Supplier name columns', '\n')
     
     # Drop s/n column.
     del xl[xl.columns[0]]
@@ -83,21 +85,35 @@ for i in range(len(codes)):
         else:
             cont=supplier_name[-1].replace('~', '')
             supplier_name.append(f'{cont}~')
+    print('Identifing individual puchures with supplier name', '\n')
+
     
     # Defining supplier name
     xl['SUPPLIER_NAME'] = supplier_name
+    print('Adding Supplier name to rows')
     
     # Rows to Delete.
     delete_row = xl[xl['SUPPLIER_NAME'] == 'delete_row'].index.to_list()
-   
+
     # Drop rows. 
     xl.drop(delete_row, axis = 0, inplace = True)
-
+    print('Deleting rows thare are none')
+    
     # Reset index. 
     xl = xl.reset_index(drop = True)
+    print('Resetting Dataset')
     
     # Rows that aren't needed.
     sup_del = xl[xl['SUPPLIER_NAME'] == xl['DESCRIPTION']].index
+    # Drop rows. 
+    xl.drop(sup_del, axis = 0, inplace = True)
+    print('Deleting supplier name row')
+    
+    # Reset index. 
+    xl = xl.reset_index(drop = True)
+    
+    # Reordering columns 
+    xl = xl.loc[:, xl.columns[-2:].to_list() + xl.columns[:-2].to_list()]
     
     
 
