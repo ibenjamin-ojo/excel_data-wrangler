@@ -26,5 +26,86 @@ for file in files:
     codes.append(extr)
 
 print(codes)
-# loaing packages. 
-#xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = '367-369',engine='openpyxl', na_values=['nan'])
+
+
+for i in range(len(codes)): 
+    # loaing packages.
+    xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = codes[i],
+                       engine='openpyxl', na_values=['nan'])
+    
+    # Getting the container numbers.
+    c_list = []
+    for i in range(4): 
+        c = xl.iloc[i, :].dropna().to_list()
+        c_list.append(c)
+    for j in range(len(c_list)): 
+        if len(c_list[j])>=1 and c_list[j][0][:3] == 'CON':
+            code = c_list[j][0]
+            code_idx = j
+            header_idx = j + 1
+            break
+    print(f'Container {code[i]}: {code}')
+    
+    # Column Header. 
+    columns = xl.iloc[header_idx,:].to_list()
+    
+    print(f"Container {code[i]} columns: {columns}")
+    
+    # # converting first row to header. 
+    xl.columns = columns
+    
+    # Deleting rows
+    xl.drop([i for i in range(header_idx+1)], axis=0, inplace=True)
+    
+    # Reset_index
+    xl.reset_index(drop = True)
+    
+    # Creating columns.
+    xl['CONTAINER_CODE'] = code
+    xl['SUPPLIER_NAME'] = ' '
+    
+    # Drop s/n column.
+    del xl[xl.columns[0]]
+    
+    # Supplier and item code list 
+    supplier = xl['DESCRIPTION'].fillna('re').to_list()
+    item_code = xl['CODE'].fillna('re').to_list()
+    quantity = xl['QUANTITY'].fillna('re').to_list()
+    
+    # Extracting Supplier name for row. 
+    supplier_name = []
+    
+    for i in range(len(supplier)):
+        if supplier[i] != 're' and item_code[i] == 're' and quantity[i] == 're':
+            supplier_name.append(supplier[i])
+        elif supplier[i] == 're' and item_code[i] == 're'and quantity[i] == 're':
+            supplier_name.append('delete_row')
+        else:
+            cont=supplier_name[-1].replace('~', '')
+            supplier_name.append(f'{cont}~')
+    
+    # Defining supplier name
+    xl['SUPPLIER_NAME'] = supplier_name
+    
+    # Rows to Delete.
+    delete_row = xl[xl['SUPPLIER_NAME'] == 'delete_row'].index.to_list()
+   
+    # Drop rows. 
+    xl.drop(delete_row, axis = 0, inplace = True)
+
+    # Reset index. 
+    xl = xl.reset_index(drop = True)
+    
+    # Rows that aren't needed.
+    sup_del = xl[xl['SUPPLIER_NAME'] == xl['DESCRIPTION']].index
+    
+    
+
+
+
+    
+    
+
+    
+    
+    
