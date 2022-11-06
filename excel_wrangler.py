@@ -25,30 +25,33 @@ for file in files:
     extr = file.split(' ')[1].split('.')[0]
     codes.append(extr)
 
-print(codes)
+print(codes, '\n')
 
 
-for i in range(3): 
+for num in range(3): 
     # loaing packages.
-    xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = codes[i],
+    xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = codes[num],
                        engine='openpyxl', na_values=['nan'])
     
     # Getting the container numbers.
     c_list = []
+    
     for i in range(4): 
         c = xl.iloc[i, :].dropna().to_list()
+        c = [str(d) for d in c]
         c_list.append(c)
+        
     for j in range(len(c_list)): 
         if len(c_list[j])>=1 and c_list[j][0][:3] == 'CON':
             code = c_list[j][0]
             code_idx = j
             header_idx = j + 1
             break
-    print(f'Container {code[i]}: {code}', '\n')
+    print(f'Container {code[num]}: {code}', '\n')
     
     # Column Header. 
     columns = xl.iloc[header_idx,:].to_list()
-    print(f"Container {code[i]} columns: {columns}", '\n')
+    print(f"Container {code[num]} columns: {columns}", '\n')
     
     # # converting first row to header. 
     xl.columns = columns
@@ -117,7 +120,7 @@ for i in range(3):
     print('Reorder Columns', '\n')
     
     # Saving file
-    xl.to_csv(f'csv_file/{code[i]}.csv', index = False)
+    xl.to_csv(f'csv_files/{codes[num]}.csv', index = False)
     
     
 
