@@ -25,13 +25,12 @@ for file in files:
     extr = file.split(' ')[1].split('.')[0]
     codes.append(extr)
 
-print(codes, '\n')
-
-
-for num in range(3): 
+for num in range(len(codes)): 
     # loaing packages.
     xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = codes[num],
                        engine='openpyxl', na_values=['nan'])
+    
+    print(f"FORMATING: {codes[num]},\n")
     
     # Getting the container numbers.
     c_list = []
@@ -47,19 +46,15 @@ for num in range(3):
             code_idx = j
             header_idx = j + 1
             break
-    print(f'Container {code[num]}: {code}', '\n')
     
     # Column Header. 
     columns = xl.iloc[header_idx,:].to_list()
-    print(f"Container {code[num]} columns: {columns}", '\n')
     
     # # converting first row to header. 
     xl.columns = columns
-    print('Replacing None Columns', '\n')
     
     # Deleting rows
     xl.drop([i for i in range(header_idx+1)], axis=0, inplace=True)
-    print('Dropping rows with headers', '\n')
     
     # Reset_index
     xl.reset_index(drop = True)
@@ -67,7 +62,6 @@ for num in range(3):
     # Creating columns.
     xl['CONTAINER_CODE'] = code
     xl['SUPPLIER_NAME'] = ' '
-    print('Creating Container_code and Supplier name columns', '\n')
     
     # Drop s/n column.
     del xl[xl.columns[0]]
@@ -88,39 +82,35 @@ for num in range(3):
         else:
             cont=supplier_name[-1].replace('~', '')
             supplier_name.append(f'{cont}~')
-    print('Identifing individual puchures with supplier name', '\n')
-
     
     # Defining supplier name
     xl['SUPPLIER_NAME'] = supplier_name
-    print('Adding Supplier name to rows')
     
     # Rows to Delete.
     delete_row = xl[xl['SUPPLIER_NAME'] == 'delete_row'].index.to_list()
 
     # Drop rows. 
     xl.drop(delete_row, axis = 0, inplace = True)
-    print('Deleting rows thare are none')
-    
+   
     # Reset index. 
     xl = xl.reset_index(drop = True)
-    print('Resetting Dataset')
     
     # Rows that aren't needed.
     sup_del = xl[xl['SUPPLIER_NAME'] == xl['DESCRIPTION']].index
+    
     # Drop rows. 
     xl.drop(sup_del, axis = 0, inplace = True)
-    print('Deleting supplier name row')
+
     
     # Reset index. 
     xl = xl.reset_index(drop = True)
     
     # Reordering columns 
     xl = xl.loc[:, xl.columns[-2:].to_list() + xl.columns[:-2].to_list()]
-    print('Reorder Columns', '\n')
     
     # Saving file
     xl.to_csv(f'csv_files/{codes[num]}.csv', index = False)
+    print(f'SAVING: {codes[num]}.csv', '\n\n')
     
     
 
