@@ -37,7 +37,7 @@ for file in files[100:150]:
 excel_append2 = excel_append2.iloc[:, :12]
 
 excel_append3 = pd.DataFrame()
-for file in files[150:]:
+for file in files[150:240]:
     origi = pd.read_csv(f'csv_files/{file}')
     excel_append3 = excel_append3.append(origi, ignore_index = True)
 
