@@ -8,7 +8,7 @@ Created on Tue Oct 11 11:40:32 2022
 import openpyxl
 import os
 
-# File name.
+# File path.
 cont_folder = 'C:/Users/User1/Documents/Data_Project/excel_data-wrangler/excel_files/container_file'
 
 # Print list of file in a folder. 
