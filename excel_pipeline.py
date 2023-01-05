@@ -27,4 +27,16 @@ Class excel_pipeline:
         self.file_path = file_path
         self.save_path = save_path
         
-    def file_code(self, )
+    def file_code(self):
+        """Extracting file code and return them as list"""
+        codes = []
+
+        for file in files:
+            extr = file.split(' ')[1].split('.')[0]
+            codes.append(extr)
+            
+        self.code = codes
+        
+        return self.codes
+    
+    def 
