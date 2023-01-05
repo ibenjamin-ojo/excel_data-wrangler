@@ -9,9 +9,9 @@ import os
 
 '''
 
-This python combines the pervious script (excel_extractor, excel_wrangler, 
+This script combines the pervious script (excel_extractor, excel_wrangler, 
 and excel_marger) into one unifered pipeline that extract, clean and formate
-the data, and merge excel sheet into one unifered formate. 
+the data, and merge excel sheet into one workbook. 
 
 '''
 
