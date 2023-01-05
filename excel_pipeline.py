@@ -35,8 +35,24 @@ Class excel_pipeline:
             extr = file.split(' ')[1].split('.')[0]
             codes.append(extr)
             
-        self.code = codes
+        self.codes = codes
         
         return self.codes
     
-    def 
+    def excel_workbook(self): 
+        """The create an excel workbook, and code sheet"""
+        
+        # Creating excel sheet. 
+        wb = openpyxl.workbook.Workbook()
+
+        for i in range(len(self.codes)):
+            i = wb.create_sheet(codes[i])
+            
+    def sheet_copier(self):
+        """
+        This function copies each excel sheet from all files to combined 
+        file with only the interest sheet we want to work with and export out
+        a saved excel file. 
+        """
+        
+        
