@@ -15,7 +15,7 @@ the data, and merge excel sheet into one workbook.
 
 # Creating a data wrangling pipeline. 
 
-Class excel_pipeline:
+Class Excel_Pipeline():
     """ 
     This combine the last three python script into one that can 
     performe the three functions.
@@ -62,6 +62,29 @@ Class excel_pipeline:
             copy_ws = copy_wb[code]
 
             past_ws = wb[code]
+            
+            # Get maximum row and columns for colume
+            print(f'Getting Maximum row & column from data. Container-{code}', '\n')
+            rm = copy_ws.max_row
+            cm = copy_ws.max_column
+
+            # coping sheet to extract folder. 
+            print(f'Coping data from copy sheet. Container-{code}', '\n')
+            for i in range(1, rm + 1): 
+                for j in range(1, cm + 1):
+                    c = copy_ws.cell(row = i , column = j)
+                    
+                    past_ws.cell(row = i, column = j).value = c.value
+            print(f'Coping sheet complete. Container-{code}', '\n\n')
+
+
+        wb.save(saving_path)
+        print('Saving Pasting sheet', '\n')
+        
+    Class Excel_Wrangler(self):
+        
+        def 
+        
             
             
         
