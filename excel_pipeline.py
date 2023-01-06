@@ -15,7 +15,7 @@ the data, and merge excel sheet into one workbook.
 
 # Creating a data wrangling pipeline. 
 
-Class Excel_Pipeline:
+class Excel_Pipeline:
     """ 
     This combine the last three python script into one that can 
     performe the three functions.
