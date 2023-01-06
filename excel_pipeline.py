@@ -94,15 +94,15 @@ Class Excel_Pipeline:
         for num in range(len(self.codes)): 
             
             # loaing packages.
-            xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = codes[num],
+            xl = pd.read_excel('extract_2022-11.xlsx', sheet_name = self.codes[num],
                                engine='openpyxl', na_values=['nan'])
             
-            print(f"FORMATING: {codes[num]},\n")
+            print(f"FORMATING: {self.codes[num]},\n")
             
             # Getting the container numbers.
             c_list = []
             
-            for i in range(4): 
+            for i in range(4):
                 c = xl.iloc[i, :].dropna().to_list()
                 c = [str(d) for d in c]
                 c_list.append(c)
@@ -168,7 +168,6 @@ Class Excel_Pipeline:
             # Drop rows. 
             xl.drop(sup_del, axis = 0, inplace = True)
 
-            
             # Reset index. 
             xl = xl.reset_index(drop = True)
             
@@ -176,9 +175,17 @@ Class Excel_Pipeline:
             xl = xl.loc[:, xl.columns[-2:].to_list() + xl.columns[:-2].to_list()]
             
             # Saving file
-            xl.to_csv(f'csv_files/{codes[num]}.csv', index = False)
-            print(f'SAVING: {codes[num]}.csv', '\n\n')
-   
+            xl.to_csv(self.save_path + f'/csv_files/{self.codes[num]}.csv', index = False)
+            print(f'SAVING: {self.codes[num]}.csv', '\n\n')
+    
+    def excel_marger(self):
+        """
+        We will be merging all the csv files we created when cleaning our data
+        into one excel file
+        """
+        csv_path = self.save_path + f"/csv_files"
+        
+        
             
             
         
